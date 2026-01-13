@@ -1,0 +1,164 @@
+GigFlow?
+
+    GigFlow is a mini freelance marketplace, like a simplified Upwork/Fiverr.
+    There are no fixed roles:
+    Any user can act as a Client (post jobs)
+    Any user can act as a Freelancer (apply to jobs)
+    So the same user can:
+        Post one job
+        Bid on someone else’s job
+
+System Actors
+
+    There are only two logical roles:
+    | Role       | What they do                                          |
+    | ---------- | ----------------------------------------------------- |
+    | Client     | Posts a job (Gig), reviews bids, hires one freelancer |
+    | Freelancer | Browses jobs and submits bids                         |
+
+     But only a single user can do both,  ** roles are only logical
+
+Authentication Flow
+
+        They require secure login system with:
+
+            JWT
+            Stored in HttpOnly cookies
+            Flow:
+                User signs up
+                User logs in // ...
+                JWT is stored in cookie
+                All protected routes check JWT
+                Same user can post or bid
+
+Data Models
+
+    User:
+        name
+        email
+        password
+    
+    Gig(Job):
+        title
+        description
+        budget
+        ownerId   (who posted it)
+        status    (open or assigned)
+    
+    Bid:
+        gigId
+        freelancerId
+        message
+        status   (pending, hired, rejected)
+
+Complete System Flow:
+
+    Step 1 – Register & Login
+        User signs up → logs in → gets JWT cookie
+    
+    Step 2 – Post a Gig (Client side)
+
+        User fills:
+
+            Title
+            Description
+            Budget
+
+            Gig is saved with:
+                ownerId = current user
+                status = open
+        
+    Step 3 – Browse Gigs (Freelancer side)
+        User sees:
+            Only gigs where status = open
+            Can search by title
+        
+    Step 4 – Submit a Bid
+        Freelancer enters:
+            Message
+            Price
+            Bid is saved as:
+            status = pending
+    
+    Step 5 – Client views all bids
+        Only the owner of the gig can see bids for that gig.
+        This uses:
+            GET /api/bids/:gigId
+
+    Step 6 – Hiring **
+        Client clicks Hire on one bid.
+        Then all of this must happen together:
+    
+        | Action         | What happens      |
+        | -------------- | ----------------- |
+        | Selected bid   | status = hired    |
+        | All other bids | status = rejected |
+        | Gig            | status = assigned |
+    
+    This must be atomic (no double hiring allowed). *** very important
+
+
+APIs : 
+    | Method | Endpoint              |
+    | ------ | --------------------- |
+    | POST   | /api/auth/register    |
+    | POST   | /api/auth/login       |
+    | GET    | /api/gigs             |
+    | POST   | /api/gigs             |
+    | POST   | /api/bids             |
+    | GET    | /api/bids/:gigId      |
+    | PATCH  | /api/bids/:bidId/hire |
+
+
+
+==============================
+
+
+Bonus 1 – Race condition safety
+
+If two people click hire at same time:
+
+Only ONE must succeed
+
+Other must fail
+
+This requires MongoDB transactions.
+
+Bonus 2 – Real-time
+
+When hired:
+
+Freelancer must instantly receive:
+
+"You have been hired for [Project Name]!"
+
+Using Socket.io
+
+
+What  must submit
+
+They want:
+
+GitHub repo (full code)
+
+Hosted frontend + backend
+
+.env.example
+
+2-minute Loom video showing:
+
+Login
+
+Create gig
+
+Bid
+
+Hire
+
+Real-time notification
+
+
+
+
+===================
+
