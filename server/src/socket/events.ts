@@ -5,11 +5,12 @@ const userSocketMap = new Map<string, string>();
 
 const registerSocketEvents = (io: Server, socket: Socket) => {
 
-  // Client sends userId after login or register
-  socket.on("register", (userId: string) => {
+  // Map userId from auth on connection
+  const userId = socket.handshake.auth?.userId;
+  if (userId) {
     userSocketMap.set(userId, socket.id);
     console.log(`User ${userId} connected with socket ${socket.id}`);
-  });
+  }
 
   socket.on("disconnect", () => {
     // Remove disconnected socket

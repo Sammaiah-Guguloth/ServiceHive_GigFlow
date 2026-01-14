@@ -35,8 +35,8 @@ const App = () => {
 
     socket.on("hired", (data) => {
       console.log("Hired!", data);
-      
-      toast.success("you are hired !");
+
+      toast.success(data.message || "You have been hired!");
     });
 
     return () => {
