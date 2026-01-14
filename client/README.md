@@ -1,73 +1,165 @@
-# React + TypeScript + Vite
+# GigFlow Client
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+The frontend application for GigFlow, a modern freelance marketplace platform built with React, TypeScript, and Vite.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **Modern UI**: Sleek, responsive design with dark theme and glassmorphism effects
+- **Real-time Updates**: Socket.io integration for instant notifications
+- **State Management**: Redux Toolkit for predictable state management
+- **Authentication**: Secure JWT-based authentication flow
+- **Gig Management**: Create, browse, and manage freelance gigs
+- **Bidding System**: Intuitive bid submission and management
+- **Responsive Design**: Mobile-first approach with Tailwind CSS
 
-## React Compiler
+## Tech Stack
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- **Framework**: React 19
+- **Language**: TypeScript
+- **Build Tool**: Vite
+- **Styling**: Tailwind CSS
+- **State Management**: Redux Toolkit + React Redux
+- **Routing**: React Router v7
+- **HTTP Client**: Axios
+- **Real-time**: Socket.io Client
+- **Animations**: Framer Motion
+- **Notifications**: React Toastify
+- **Icons**: React Icons
 
-## Expanding the ESLint configuration
+## Pages & Components
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+### Public Pages
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+- **Home**: Landing page with hero section and features
+- **Login/Register**: Authentication forms with validation
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+### Protected Pages
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+- **Post Gig**: Form to create new freelance gigs
+- **My Gigs**: Dashboard showing user's posted gigs
+- **Browse Gigs**: Searchable list of available gigs
+- **View Bids**: Manage bids for a specific gig
+
+### Key Components
+
+- **Navbar**: Navigation with authentication status
+- **Footer**: Site footer with links
+- **GigList**: Reusable gig display component
+- **BidModal**: Bid submission form
+- **ViewBidModal**: Bid details and hiring actions
+
+## Project Structure
+
+```
+client/
+├── public/              # Static assets
+├── src/
+│   ├── api/            # Axios configuration and API endpoints
+│   ├── assets/         # Images and other assets
+│   ├── components/     # Reusable UI components
+│   │   ├── bids/       # Bid-related components
+│   │   ├── browseGigs/ # Gig browsing components
+│   │   ├── global/     # Global layout components
+│   │   └── home/       # Home page sections
+│   ├── hooks/          # Custom React hooks
+│   ├── pages/          # Page components
+│   ├── redux/          # State management
+│   │   ├── slices/     # Redux slices
+│   │   └── thunks/     # Async actions
+│   ├── socket/         # Socket.io utilities
+│   ├── App.tsx         # Main app component
+│   └── main.tsx        # App entry point
+├── package.json
+└── README.md
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## Environment Variables
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+Create a `.env` file in the client root with:
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```env
+VITE_API_URL=http://localhost:5000/api
+VITE_SOCKET_URL=http://localhost:5000
 ```
+
+## Installation & Setup
+
+1. Navigate to the client directory:
+
+   ```bash
+   cd client
+   ```
+
+2. Install dependencies:
+
+   ```bash
+   npm install
+   ```
+
+3. Set up environment variables (see above)
+
+4. Start the development server:
+   ```bash
+   npm run dev
+   ```
+
+## Available Scripts
+
+- `npm run dev` - Start development server
+- `npm run build` - Build for production
+- `npm run preview` - Preview production build
+- `npm run lint` - Run ESLint
+
+## State Management
+
+The app uses Redux Toolkit with the following slices:
+
+- **authSlice**: User authentication state
+- **gigSlice**: Gig-related state (browse, my gigs)
+
+### Async Actions (Thunks)
+
+- **authThunk**: Login, register, logout, getMe
+- **gigThunk**: Post gig, get gigs, get my gigs
+- **bidThunk**: Create bid, get bids, hire bid
+
+## API Integration
+
+All API calls are handled through Axios with interceptors for:
+
+- Base URL configuration
+- JWT token attachment
+- Error handling
+
+## Socket Integration
+
+Real-time features include:
+
+- Instant hiring notifications
+- Live updates for gig status changes
+
+## Styling Guidelines
+
+- **Dark Theme**: Primary color scheme with emerald accents
+- **Glassmorphism**: Backdrop blur effects for modern look
+- **Responsive**: Mobile-first design approach
+- **Animations**: Smooth transitions with Framer Motion
+
+## Contributing
+
+1. Follow the existing code style and structure
+2. Use TypeScript for all new code
+3. Add proper error handling
+4. Test on multiple screen sizes
+5. Update documentation as needed
+
+## Browser Support
+
+- Chrome (latest)
+- Firefox (latest)
+- Safari (latest)
+- Edge (latest)
+
+## License
+
+This project is licensed under the MIT License.
