@@ -7,11 +7,12 @@ import connectToDB from "./config/connectToDB.js";
 import userRoutes from "./routes/user.routes.js";
 import gigRoutes from "./routes/gig.routes.js";
 import bidRoutes from "./routes/bid.routes.js"; 
-
-
+import http from "http";
+import { initSocket } from "./socket/index.js";
 
 
 const app = express();
+const server = http.createServer(app);
 const PORT = process.env.PORT || 5000;
 
 app.use(cors({
@@ -33,7 +34,11 @@ app.use("/api/v1/gigs" , gigRoutes);
 app.use("/api/v1/bids", bidRoutes);
 
 connectToDB().then(() => {
-    app.listen(PORT , () => {
+
+    // initialize socket
+    initSocket(server);
+
+    server.listen(PORT , () => {
         console.log("Server is running on PORT : " , PORT );
     })
 })

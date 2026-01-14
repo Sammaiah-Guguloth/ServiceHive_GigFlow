@@ -3,6 +3,7 @@ import mongoose from "mongoose";
 import { AuthRequest } from "../middlewares/auth.middleware.js";
 import gigModel from "../models/gig.model.js";
 import bidModel from "../models/bid.model.js";
+import { notifyUserHired } from "../socket/utils.js";
 
 
 interface CreateBidBody {
@@ -146,6 +147,9 @@ export const hireBid = async (
     // Update gig status
     gig.status = "assigned";
     await gig.save({ session });
+
+    notifyUserHired(bid.freelancerId.toString(), gig._id.toString());
+
 
     await session.commitTransaction();
 
