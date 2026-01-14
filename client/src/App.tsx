@@ -17,7 +17,7 @@ import { useSocket } from "./hooks/useSocket"
 import { useSocketInit } from "./hooks/useSocketInit"
 import type { Socket } from "socket.io-client"
 import { toast } from "react-toastify"
-import ProtectedRoute from "./components/global/ProtectedRoute"
+// import ProtectedRoute from "./components/global/ProtectedRoute"
 
 const App = () => {
 
