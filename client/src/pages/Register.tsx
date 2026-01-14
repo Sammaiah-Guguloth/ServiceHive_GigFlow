@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, Link } from "react-router-dom";
 import { motion } from "framer-motion";
+import { toast } from "react-toastify";
 import type { AppDispatch, RootState } from "../redux/store";
 import { registerUserThunk } from "../redux/thunks/auth.thunk";
 
@@ -30,9 +31,11 @@ const Register = () => {
     e.preventDefault();
     try {
       await dispatch(registerUserThunk(formData)).unwrap();
+      toast.success("Registration successful!");
       navigate("/gigs");
     } catch (err) {
       console.error(err);
+      toast.error("Registration failed");
     }
   };
 

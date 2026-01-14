@@ -81,11 +81,7 @@ const HowItWorks = () => {
         </div>
 
         
-        <div className="mt-16 text-center">
-          <p className="inline-block text-[11px] font-mono text-gray-500 uppercase tracking-[0.2em] border-b border-white/10 pb-2">
-            With <span className="text-white">MongoDB Transactions</span> for 100% Data Integrity
-          </p>
-        </div>
+       
       </div>
     </section>
   );

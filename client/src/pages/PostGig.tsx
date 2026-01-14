@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
+import { toast } from "react-toastify";
 import type { AppDispatch } from "../redux/store";
 import { postGigThunk } from "../redux/thunks/gig.thunk";
 
@@ -42,9 +43,11 @@ const PostGig = () => {
         })
       ).unwrap();
 
+      toast.success("Gig posted successfully!");
       navigate("/my-gigs");
     } catch (err: any) {
       setError(err);
+      toast.error(err || "Failed to post gig");
     } finally {
       setLoading(false);
     }

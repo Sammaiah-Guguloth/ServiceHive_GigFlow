@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, Link } from "react-router-dom";
 import { motion } from "framer-motion";
+import { toast } from "react-toastify";
 import type { AppDispatch, RootState } from "../redux/store";
 import { loginUserThunk } from "../redux/thunks/auth.thunk";
 
@@ -22,9 +23,11 @@ const Login = () => {
       await dispatch(
         loginUserThunk({ email, password })
       ).unwrap();
-      navigate("/gigs"); 
+      toast.success("Login successful!");
+      navigate("/gigs");
     } catch (err) {
       console.error(err);
+      toast.error("Login failed");
     }
   };
 

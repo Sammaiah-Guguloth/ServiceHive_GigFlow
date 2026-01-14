@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useParams, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
+import { toast } from "react-toastify";
 import type { AppDispatch } from "../redux/store";
 
 import {
@@ -41,11 +42,13 @@ const ViewBids = () => {
   const handleHire = async () => {
     if (!selectedBid) return;
     try {
-      
-      await dispatch(hireBidThunk(selectedBid._id)).unwrap(); 
-      navigate("/my-gigs");
-    } catch (err) {
+
+      await dispatch(hireBidThunk(selectedBid._id)).unwrap();
+      toast.success("Bid hired successfully!");
+      setSelectedBid(null);
+    } catch (err: any) {
       console.error("Failed to execute hiring protocol", err);
+      toast.error(err || "Failed to hire bid");
     }
   };
 
@@ -78,7 +81,7 @@ const ViewBids = () => {
             </div>
             
             <div className="bg-white/[0.02] border border-white/10 px-6 py-3 rounded-xl">
-              <p className="text-[9px] font-bold text-gray-500 uppercase tracking-widest mb-1">Active Gigs</p>
+              <p className="text-[9px] font-bold text-gray-500 uppercase tracking-widest mb-1">Gig ID</p>
               <p className="text-sm font-mono text-white tracking-tight">{gigId?.slice(-12)}</p>
             </div>
           </div>

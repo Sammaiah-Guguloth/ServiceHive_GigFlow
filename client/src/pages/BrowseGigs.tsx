@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { motion, AnimatePresence } from "framer-motion";
+import { toast } from "react-toastify";
 import type { AppDispatch, RootState } from "../redux/store";
 
 import { getGigsThunk } from "../redux/thunks/gig.thunk";
@@ -49,9 +50,11 @@ const BrowseGigs = () => {
         })
       ).unwrap();
 
-      setBidGig(null); 
+      toast.success("Bid submitted successfully!");
+      setBidGig(null);
     } catch (err) {
       console.error("Bid submission failure", err);
+      toast.error("Failed to submit bid");
     }
   };
 

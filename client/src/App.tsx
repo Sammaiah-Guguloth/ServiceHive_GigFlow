@@ -17,6 +17,7 @@ import { useSocket } from "./hooks/useSocket"
 import { useSocketInit } from "./hooks/useSocketInit"
 import type { Socket } from "socket.io-client"
 import { toast } from "react-toastify"
+import ProtectedRoute from "./components/global/ProtectedRoute"
 
 const App = () => {
 
@@ -36,7 +37,7 @@ const App = () => {
     socket.on("hired", (data) => {
       console.log("Hired!", data);
 
-      toast.success(data.message || "You have been hired!");
+      toast.success(data.message || "You have been hired for ServiceHive GigFlow!");
     });
 
     return () => {
@@ -55,12 +56,20 @@ const App = () => {
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
 
+        {/* <Route element={<ProtectedRoute />}>
+          <Route path="/post-gig" element={<PostGig />} />
+          <Route path="/my-gigs" element={<MyGigs />} />
+          <Route path="/gigs" element={<BrowseGigs />} />
+
+          <Route path="/gigs/:gigId/bids" element={<ViewBids />} />
+        </Route> */}
+
+          
         <Route path="/post-gig" element={<PostGig />} />
-        <Route path="/my-gigs" element={<MyGigs />} />
-        <Route path="/gigs" element={<BrowseGigs />} />
+          <Route path="/my-gigs" element={<MyGigs />} />
+          <Route path="/gigs" element={<BrowseGigs />} />
 
-        <Route path="/gigs/:gigId/bids" element={<ViewBids />} />
-
+          <Route path="/gigs/:gigId/bids" element={<ViewBids />} />
         <Route path="*" element={<NotFound />} />
 
       </Routes>
