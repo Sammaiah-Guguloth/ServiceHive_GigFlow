@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import userModel from "../models/user.model.js";
+import { AuthRequest } from "../middlewares/auth.middleware.js";
 
 
 // SEND TOKEN FUNCTION
@@ -116,5 +117,28 @@ export const logout = async (req: Request, res: Response) => {
     res.status(200).json({ message: "Logged out successfully" });
   } catch (error) {
     res.status(500).json({ message: "Server error", error });
+  }
+};
+
+
+export const getMe = async (req: Request & AuthRequest, res: Response) => {
+  try {
+    const userId = req.user?._id;
+
+    const user = await userModel.findById(userId).select("-password");
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    res.status(200).json({
+      user: {
+        id: user._id,
+        name: user.name,
+        email: user.email,
+      },
+    });
+  } catch (error) {
+    res.status(500).json({ message: "Server error" });
   }
 };

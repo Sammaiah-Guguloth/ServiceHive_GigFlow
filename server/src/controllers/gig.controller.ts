@@ -10,6 +10,7 @@ interface CreateGigBody {
 
 interface GetGigsQuery {
     search?: string;
+    mine?:string
 }
 
 /* =========================
@@ -50,27 +51,44 @@ export const createGig = async (
 
 
 /* =========================
-   GET ALL OPEN GIGS
+   GET GIGS
 ========================= */
 export const getGigs = async (
-    req: AuthRequest & { query: GetGigsQuery },
-    res: Response
-  ) => {
-    try {
-      const { search } = req.query;
-  
-      const filter: any = { status: "open" };
-  
-      if (search) {
-        filter.title = { $regex: search, $options: "i" };
-      }
-  
-      const gigs = await gigModel.find(filter)
-        .populate("ownerId", "name email")
-        .sort({ createdAt: -1 });
-  
-      res.json(gigs);
-    } catch (err) {
-      res.status(500).json({ message: "Server error", err });
+  req: AuthRequest & { query: GetGigsQuery },
+  res: Response
+) => {
+  try {
+    const { search, mine } = req.query;
+
+    const filter: any = {};
+
+    const isMine = mine === "true";
+
+    // ✅ Browse gigs
+    if (!isMine) {
+      filter.status = "open";
+
+      // EXCLUDE gigs created by the same user
+      filter.ownerId = { $ne: req.user?._id };
     }
-  };
+
+    // ✅ My gigs
+    if (isMine) {
+      filter.ownerId = req.user?._id;
+    }
+
+    // ✅ Search (works for both cases)
+    if (search) {
+      filter.title = { $regex: search, $options: "i" };
+    }
+
+    const gigs = await gigModel
+      .find(filter)
+      .sort({ createdAt: -1 });
+
+    res.status(200).json({ gigs });
+  } catch (err) {
+    res.status(500).json({ message: "Server error" });
+  }
+};
+

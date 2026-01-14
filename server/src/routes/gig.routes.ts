@@ -6,10 +6,10 @@ const router = Router();
 
 /**
  * @route   GET /api/gigs
- * @desc    Get all open gigs (with search)
+ * @desc    Get  gigs (with search and also mine)
  * @access  Public
  */
-router.get("/", getGigs);
+router.get("/", authMiddleware , getGigs);
 
 /**
  * @route   POST /api/gigs
