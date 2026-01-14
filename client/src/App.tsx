@@ -13,6 +13,10 @@ import PostGig from "./pages/PostGig"
 import MyGigs from "./pages/MyGigs"
 import BrowseGigs from "./pages/BrowseGigs"
 import ViewBids from "./pages/ViewBids"
+import { useSocket } from "./hooks/useSocket"
+import { useSocketInit } from "./hooks/useSocketInit"
+import type { Socket } from "socket.io-client"
+import { toast } from "react-toastify"
 
 const App = () => {
 
@@ -21,6 +25,25 @@ const App = () => {
   useEffect(() => {
     dispatch(getMeThunk());
   } , [dispatch]);
+
+  useSocketInit();
+
+  const socket : Socket | null = useSocket();
+
+  useEffect(() => {
+    if(!socket) return;
+
+    socket.on("hired", (data) => {
+      console.log("Hired!", data);
+      
+      toast.success("you are hired !");
+    });
+
+    return () => {
+      socket.off("hired");
+    };
+  })
+
 
   return (
     <div className="">
