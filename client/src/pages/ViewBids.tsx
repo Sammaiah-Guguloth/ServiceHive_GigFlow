@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { toast } from "react-toastify";
 import type { AppDispatch } from "../redux/store";
@@ -16,7 +16,7 @@ import ViewBidModal from "../components/bids/ViewBidModal";
 const ViewBids = () => {
   const { gigId } = useParams();
   const dispatch = useDispatch<AppDispatch>();
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   const [bids, setBids] = useState<any[]>([]);
   const [selectedBid, setSelectedBid] = useState<any | null>(null);
