@@ -1,11 +1,14 @@
-
-import express from "express";
 import dotenv from "dotenv";
+dotenv.config();
+import express from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import connectToDB from "./config/connectToDB.js";
+import userRoutes from "./routes/user.routes.js";
+import gigRoutes from "./routes/gig.routes.js";
+import bidRoutes from "./routes/bid.routes.js"; 
 
-dotenv.config();
+
 
 
 const app = express();
@@ -22,6 +25,12 @@ app.use(cors({
 app.get("/", (req, res) => {
     res.send("GigFlow API is running");
   });
+
+
+// Routes 
+app.use("/api/v1/auth" , userRoutes);
+app.use("/api/v1/gigs" , gigRoutes);
+app.use("/api/v1/bids", bidRoutes);
 
 connectToDB().then(() => {
     app.listen(PORT , () => {
