@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { motion, AnimatePresence } from "framer-motion";
 import type { AppDispatch, RootState } from "../redux/store";
 
 import { getGigsThunk } from "../redux/thunks/gig.thunk";
@@ -18,8 +19,6 @@ const BrowseGigs = () => {
   );
 
   const [search, setSearch] = useState("");
-
-  // ✅ SEPARATE STATES
   const [viewGig, setViewGig] = useState<any | null>(null);
   const [bidGig, setBidGig] = useState<any | null>(null);
 
@@ -27,6 +26,7 @@ const BrowseGigs = () => {
     dispatch(getGigsThunk(undefined));
   }, [dispatch]);
 
+  // Execute search filter logic 
   const handleSearch = () => {
     dispatch(getGigsThunk(search.trim() || undefined));
   };
@@ -36,7 +36,7 @@ const BrowseGigs = () => {
     price: number;
   }) => {
     if (!bidGig) {
-      console.error("No bid gig selected");
+      console.error("No bid selected");
       return;
     }
 
@@ -49,56 +49,82 @@ const BrowseGigs = () => {
         })
       ).unwrap();
 
-      setBidGig(null); // close bid modal
+      setBidGig(null); 
     } catch (err) {
-      console.error("Bid submission failed:", err);
+      console.error("Bid submission failure", err);
     }
   };
 
   return (
-    <div className="max-w-6xl mx-auto px-6 py-10">
-      <SearchBar
-        value={search}
-        onChange={setSearch}
-        onSearch={handleSearch}
-      />
+    <motion.div 
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      className="min-h-screen bg-[#050505] pb-20"
+    >
+      {/* Marketplace Header Section */}
+      <div className="relative py-6 border-b border-white/5 overflow-hidden">
+        <div className="absolute  border-emerald-500/20 border-t-emerald-500 top-0 left-1/2 -translate-x-1/2 w-[800px] h-[300px] rounded-full blur-[120px] pointer-events-none" />
+        
+        <div className="relative max-w-7xl mx-auto px-6 text-center">
+         
+          <SearchBar
+            value={search}
+            onChange={setSearch}
+            onSearch={handleSearch}
+          />
 
-      {loading && (
-        <p className="mt-6 text-center text-gray-600">
-          Loading gigs...
-        </p>
-      )}
+          <p className="text-gray-500 text-xs font-mono uppercase tracking-[0.3em]">
+           Search Gigs by Title --- RESULTS
+          </p>
+        </div>
+      </div>
 
-      {error && (
-        <p className="mt-6 text-center text-red-600">
-          {error}
-        </p>
-      )}
+      <main className="max-w-7xl mx-auto px-6 py-12">
+        {/* State Handlers: Loading/Error [cite: 11] */}
+        {loading && (
+          <div className="flex flex-col items-center justify-center py-20 gap-4">
+            <div className="w-10 h-10 border-2 rounded-full animate-spin" />
+            <p className="text-xs font-mono text-gray-600 uppercase tracking-widest animate-pulse">
+              Fetching  Data...
+            </p>
+          </div>
+        )}
 
-      {!loading && !error && (
-        <GigList gigs={browseGigs} onView={setViewGig} />
-      )}
+        {error && (
+          <div className="mt-10 p-6 bg-red-500/5 border border-red-500/20 rounded-xl text-center">
+            <p className="text-sm font-bold text-red-500 uppercase tracking-tighter">
+              Protocol Error: {error}
+            </p>
+          </div>
+        )}
 
-      {/* VIEW GIG MODAL */}
-      {viewGig && (
-        <ViewGigModal
-          gig={viewGig}
-          onClose={() => setViewGig(null)}
-          onBid={() => {
-            setBidGig(viewGig);   // ✅ SET BID CONTEXT
-            setViewGig(null);     // close view modal
-          }}
-        />
-      )}
+        {/* Live Gig Registry [cite: 18, 33] */}
+        {!loading && !error && (
+          <GigList gigs={browseGigs} onView={setViewGig} />
+        )}
+      </main>
 
-      {/* BID MODAL */}
-      {bidGig && (
-        <BidModal
-          onClose={() => setBidGig(null)}
-          onSubmit={handleBidSubmit}
-        />
-      )}
-    </div>
+      {/* Persistent Interaction Overlays [cite: 22] */}
+      <AnimatePresence>
+        {viewGig && (
+          <ViewGigModal
+            gig={viewGig}
+            onClose={() => setViewGig(null)}
+            onBid={() => {
+              setBidGig(viewGig);   
+              setViewGig(null); 
+            }}
+          />
+        )}
+
+        {bidGig && (
+          <BidModal
+            onClose={() => setBidGig(null)}
+            onSubmit={handleBidSubmit}
+          />
+        )}
+      </AnimatePresence>
+    </motion.div>
   );
 };
 

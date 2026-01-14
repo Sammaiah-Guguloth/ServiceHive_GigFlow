@@ -15,7 +15,6 @@ const ProfileDropdown = () => {
   const [open, setOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
-  // Close on outside click
   useEffect(() => {
     const handleOutsideClick = (e: MouseEvent) => {
       if (
@@ -25,10 +24,8 @@ const ProfileDropdown = () => {
         setOpen(false);
       }
     };
-
     document.addEventListener("mousedown", handleOutsideClick);
-    return () =>
-      document.removeEventListener("mousedown", handleOutsideClick);
+    return () => document.removeEventListener("mousedown", handleOutsideClick);
   }, []);
 
   const handleLogout = async () => {
@@ -43,55 +40,71 @@ const ProfileDropdown = () => {
 
   return (
     <div className="relative" ref={dropdownRef}>
-      {/* Profile button */}
+      {/* Profile Trigger Button */}
       <button
         onClick={() => setOpen((prev) => !prev)}
-        className="flex items-center gap-2 rounded-full border px-3 py-1.5 text-sm font-medium text-gray-700 hover:bg-gray-100"
+        className="flex items-center gap-3 rounded-full border border-white/10 bg-white/5 pl-1.5 pr-4 py-1.5 transition-all hover:bg-white/10 hover:border-emerald-500/30 group"
       >
-        <span className="h-8 w-8 flex items-center justify-center rounded-full bg-blue-600 text-white font-semibold">
+        <div className="h-8 w-8 flex items-center justify-center rounded-full bg-gradient-to-br from-emerald-500 to-blue-600 text-[11px] font-black text-white shadow-[0_0_15px_rgba(16,185,129,0.2)] group-hover:shadow-emerald-500/40 transition-all">
           {user?.name.charAt(0).toUpperCase()}
-        </span>
-        <span className="hidden md:block">{user?.name}</span>
+        </div>
+        <div className="hidden md:flex flex-col items-start leading-tight">
+        
+        </div>
       </button>
 
-      {/* Dropdown */}
+      {/* Glassmorphic Dropdown Menu */}
       {open && (
-        <div className="absolute right-0 mt-2 w-48 rounded-md border bg-white shadow-lg">
-          <ul className="py-1 text-sm text-gray-700">
+        <div className="absolute right-0 mt-3 w-56 rounded-xl border border-white/10 bg-black/90 backdrop-blur-2xl shadow-2xl overflow-hidden z-[110]">
+          <div className="p-4 border-b border-white/5 bg-white/[0.02]">
+            <p className="text-[10px] uppercase tracking-[0.2em] text-gray-500 font-bold mb-1 text-center">Account </p>
+            <p className="text-lg font-bold text-white truncate">{user?.name}</p>
+            <p className="text-sm font-medium text-white truncate text-gray-600">{user?.email}</p>
+           
+
+          </div>
+          
+          <ul className="py-2 text-[11px] font-bold uppercase tracking-widest">
             <li>
               <Link
                 to="/post-gig"
                 onClick={() => setOpen(false)}
-                className="block px-4 py-2 hover:bg-gray-100"
+                className="flex items-center justify-between px-4 py-3 text-gray-400 hover:text-emerald-400 hover:bg-emerald-500/5 transition-all"
               >
-                Post a Gig
+                <span>Post a Gig</span>
+                <span className="text-[9px] opacity-40 font-mono">[01]</span>
               </Link>
             </li>
             <li>
               <Link
                 to="/gigs"
                 onClick={() => setOpen(false)}
-                className="block px-4 py-2 hover:bg-gray-100"
+                className="flex items-center justify-between px-4 py-3 text-gray-400 hover:text-emerald-400 hover:bg-emerald-500/5 transition-all"
               >
-                Browse Gigs
+                <span>Browse Gigs</span>
+                <span className="text-[9px] opacity-40 font-mono">[02]</span>
               </Link>
             </li>
             <li>
               <Link
                 to="/my-gigs"
                 onClick={() => setOpen(false)}
-                className="block px-4 py-2 hover:bg-gray-100"
+                className="flex items-center justify-between px-4 py-3 text-gray-400 hover:text-emerald-400 hover:bg-emerald-500/5 transition-all"
               >
-                My Posted Gigs
+                <span>Posted Gigs</span>
+                <span className="text-[9px] opacity-40 font-mono">[03]</span>
               </Link>
             </li>
-            <li className="border-t">
+            <li className="mt-2 border-t border-white/5 pt-2">
               <button
                 onClick={handleLogout}
                 disabled={loading}
-                className="w-full text-left px-4 py-2 text-red-600 hover:bg-gray-100 disabled:opacity-50"
+                className="w-full flex items-center justify-between px-4 py-4 text-red-500 hover:bg-red-500/5 transition-all disabled:opacity-50"
               >
-                Logout
+                <span>Logout</span>
+                <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M17 16l4-4m0 0l-4-4m4 4H7" />
+                </svg>
               </button>
             </li>
           </ul>

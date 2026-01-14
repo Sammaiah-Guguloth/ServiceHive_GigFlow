@@ -2,57 +2,45 @@ import { Link } from "react-router-dom";
 
 const Footer = () => {
   return (
-    <footer className="bg-gray-50 border-t mt-20">
-      <div className="mx-auto max-w-7xl px-6 py-12 grid grid-cols-1 md:grid-cols-3 gap-10">
+    <footer className="bg-[#050505] text-gray-500 py-16 border-t border-white/5 ">
+      <div className="mx-auto max-w-7xl px-6 grid grid-cols-1 md:grid-cols-3 gap-16">
         
-        {/* Brand */}
+        {/* About the Platform */}
         <div>
-          <h2 className="text-xl font-bold text-gray-900">GigFlow</h2>
-          <p className="mt-3 text-sm text-gray-600 max-w-xs">
-            A simple platform to post gigs, receive bids, and hire freelancers
-            instantly.
+          <h3 className="text-white font-bold mb-6 uppercase tracking-[0.2em] text-xs">About GigFlow</h3>
+          <p className="text-sm leading-relaxed">
+            A high-performance marketplace platform designed for posting gigs, 
+            managing bids, and hiring.
           </p>
         </div>
 
-        {/* Links */}
+        {/* Quick Links */}
         <div>
-          <h3 className="text-sm font-semibold text-gray-900 uppercase">
-            Quick Links
-          </h3>
-          <ul className="mt-4 space-y-2 text-sm text-gray-600">
-            <li>
-              <Link to="/gigs" className="hover:text-blue-600">
-                Browse Gigs
-              </Link>
-            </li>
-            <li>
-              <Link to="/login" className="hover:text-blue-600">
-                Login
-              </Link>
-            </li>
-            <li>
-              <Link to="/register" className="hover:text-blue-600">
-                Register
-              </Link>
-            </li>
-          </ul>
+          <h3 className="text-white font-bold mb-6 uppercase tracking-[0.2em] text-xs">Quick Links</h3>
+          <nav className="flex flex-col gap-4 text-sm font-medium">
+            <Link to="/gigs" className="hover:text-emerald-400 transition-colors">Browse Gigs</Link>
+            <Link to="/login" className="hover:text-emerald-400 transition-colors">Login</Link>
+            <Link to="/register" className="hover:text-emerald-400 transition-colors">Join ?</Link>
+          </nav>
         </div>
 
-        {/* Info */}
-        <div>
-          <h3 className="text-sm font-semibold text-gray-900 uppercase">
-            Project
-          </h3>
-          <p className="mt-4 text-sm text-gray-600">
-            Built as a full-stack assignment demonstrating authentication,
-            real-time updates, and scalable backend design.
-          </p>
+        {/* Assignment Submission Info */}
+        <div className="md:text-right">
+          <div className="space-y-1">
+            <p className="text-xs uppercase tracking-widest text-gray-600 font-bold">Assignment Submitted by:</p>
+            <p className="text-lg font-bold text-white tracking-tight italic">
+              Sammaiah Guguloth
+            </p>
+            <p className="text-[10px] font-mono text-emerald-500/80">Full-Stack Dev Assignment </p>
+          </div>
         </div>
       </div>
 
-      {/* Bottom bar */}
-      <div className="border-t py-4 text-center text-xs text-gray-500">
-        © {new Date().getFullYear()} GigFlow. All rights reserved.
+      {/* Bottom Bar */}
+      <div className="mt-16 pt-8 border-t border-white/5 text-center">
+        <p className="text-[10px] uppercase tracking-[0.4em] font-medium text-gray-700">
+          © {new Date().getFullYear()} GigFlow
+        </p>
       </div>
     </footer>
   );
