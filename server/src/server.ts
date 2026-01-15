@@ -1,6 +1,6 @@
 import dotenv from "dotenv";
 dotenv.config();
-import express from "express";
+import express , {Request , Response} from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import connectToDB from "./config/connectToDB.js";
@@ -23,7 +23,7 @@ app.use(cors({
   app.use(cookieParser());
   
 // Test route
-app.get("/", (req, res) => {
+app.get("/", (req : Request, res : Response) => {
     res.send("GigFlow API is running");
   });
 
