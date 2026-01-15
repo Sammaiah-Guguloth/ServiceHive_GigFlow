@@ -17,7 +17,7 @@ import { useSocket } from "./hooks/useSocket"
 import { useSocketInit } from "./hooks/useSocketInit"
 import type { Socket } from "socket.io-client"
 import { toast } from "react-toastify"
-// import ProtectedRoute from "./components/global/ProtectedRoute"
+import ProtectedRoute from "./components/global/ProtectedRoute"
 
 const App = () => {
 
@@ -56,20 +56,22 @@ const App = () => {
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
 
-        {/* <Route element={<ProtectedRoute />}>
-          <Route path="/post-gig" element={<PostGig />} />
-          <Route path="/my-gigs" element={<MyGigs />} />
-          <Route path="/gigs" element={<BrowseGigs />} />
-
-          <Route path="/gigs/:gigId/bids" element={<ViewBids />} />
-        </Route> */}
-
           
-        <Route path="/post-gig" element={<PostGig />} />
-          <Route path="/my-gigs" element={<MyGigs />} />
-          <Route path="/gigs" element={<BrowseGigs />} />
+        <Route path="/post-gig" element={<ProtectedRoute>
+          <PostGig />
+        </ProtectedRoute>} />
+          <Route path="/my-gigs" element={<ProtectedRoute>
+            <MyGigs />
+          </ProtectedRoute>} />
+          <Route path="/gigs" element={<ProtectedRoute>
+            <BrowseGigs />
+          </ProtectedRoute>} />
 
-          <Route path="/gigs/:gigId/bids" element={<ViewBids />} />
+          <Route path="/gigs/:gigId/bids" element={<ProtectedRoute>
+            <ViewBids />
+          </ProtectedRoute>} />
+
+
         <Route path="*" element={<NotFound />} />
 
       </Routes>
