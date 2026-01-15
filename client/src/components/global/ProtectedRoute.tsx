@@ -4,14 +4,15 @@ import type { RootState } from "../../redux/store";
 
 interface Props {
   redirectTo?: string;
-  children :any,
+  children: React.ReactNode;
 }
 
-const ProtectedRoute = ({ redirectTo = "/login" , children}: Props) => {
+const ProtectedRoute = ({ redirectTo = "/login", children }: Props) => {
   const { isAuthenticated, loading } = useSelector(
     (state: RootState) => state.auth
   );
 
+  // ⏳ WAIT until auth check finishes
   if (loading) {
     return (
       <div className="h-screen flex items-center justify-center">
@@ -20,14 +21,13 @@ const ProtectedRoute = ({ redirectTo = "/login" , children}: Props) => {
     );
   }
 
-
+  // 🚫 Not authenticated
   if (!isAuthenticated) {
     return <Navigate to={redirectTo} replace />;
   }
 
-  if(isAuthenticated) {
-    return <>{children}</>
-  }
+  // ✅ Authenticated
+  return <>{children}</>;
 };
 
 export default ProtectedRoute;

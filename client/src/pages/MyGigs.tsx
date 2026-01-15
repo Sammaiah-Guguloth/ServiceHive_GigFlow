@@ -76,7 +76,7 @@ const MyGigs = () => {
             className="py-20 text-center border border-dashed border-white/5 rounded-3xl"
           >
             <p className="text-gray-600 font-mono text-xs uppercase tracking-widest">
-              Registry Empty: No Gigs Detected 
+               Empty: No Gigs Detected 
             </p>
           </motion.div>
         ) : (
